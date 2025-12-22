@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { parseReceiptImage, ParsedItem, ReceiptMetadata } from "@/lib/receiptParser";
+import { useTrackedItems } from "@/hooks/useTrackedItems";
+import { useAuth } from "@/hooks/useAuth";
 import ParsedItemsDialog from "./ParsedItemsDialog";
 
 interface UploadedFile {
@@ -13,6 +15,7 @@ interface UploadedFile {
   items?: ParsedItem[];
   metadata?: ReceiptMetadata;
   error?: string;
+  trackedCount?: number;
 }
 
 const ReceiptUpload = () => {
@@ -21,6 +24,8 @@ const ReceiptUpload = () => {
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { addMultipleItems } = useTrackedItems();
+  const { user } = useAuth();
 
   const processFile = async (file: File) => {
     const newFile: UploadedFile = {
@@ -35,6 +40,21 @@ const ReceiptUpload = () => {
       const result = await parseReceiptImage(file);
 
       if (result.success && result.items) {
+        // Auto-track all items if user is logged in
+        let trackedCount = 0;
+        if (user && result.items.length > 0) {
+          const itemsToAdd = result.items.map((item) => ({
+            itemName: item.name,
+            itemNumber: item.itemNumber,
+            purchasePrice: item.price,
+            quantity: item.quantity,
+            purchaseDate: result.metadata?.purchaseDate || new Date().toISOString().split("T")[0],
+            storeLocation: result.metadata?.storeLocation,
+            receiptNumber: result.metadata?.receiptNumber,
+          }));
+          trackedCount = await addMultipleItems(itemsToAdd);
+        }
+
         setFiles((prev) =>
           prev.map((f) =>
             f.name === file.name
@@ -42,14 +62,17 @@ const ReceiptUpload = () => {
                   ...f, 
                   status: "complete", 
                   items: result.items,
-                  metadata: result.metadata 
+                  metadata: result.metadata,
+                  trackedCount,
                 }
               : f
           )
         );
         toast({
           title: "Receipt processed!",
-          description: `Found ${result.items.length} items to track for price drops.`,
+          description: user 
+            ? `${trackedCount} items added to tracking for price drops.`
+            : `Found ${result.items.length} items. Sign in to track prices.`,
         });
       } else {
         setFiles((prev) =>
@@ -210,7 +233,9 @@ const ReceiptUpload = () => {
                         {file.status === "processing" ? (
                           "Extracting items with AI..."
                         ) : file.status === "complete" && file.items ? (
-                          <span className="text-accent">{file.items.length} items extracted</span>
+                          <span className="text-accent">
+                            {file.trackedCount ? `${file.trackedCount} items tracked` : `${file.items.length} items extracted`}
+                          </span>
                         ) : file.status === "error" ? (
                           <span className="text-destructive">{file.error}</span>
                         ) : (
