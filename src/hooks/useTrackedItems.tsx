@@ -74,6 +74,7 @@ export const useTrackedItems = () => {
 
   const addItem = async (params: AddItemParams): Promise<TrackedItem | null> => {
     if (!user) {
+      console.log("addItem: No user found, cannot add item");
       toast({
         title: "Sign in required",
         description: "Please sign in to track items",
@@ -81,6 +82,8 @@ export const useTrackedItems = () => {
       });
       return null;
     }
+
+    console.log("addItem: Adding item for user", user.id, params.itemName);
 
     try {
       const { data, error } = await supabase
@@ -99,7 +102,12 @@ export const useTrackedItems = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("addItem: Database error", error);
+        throw error;
+      }
+
+      console.log("addItem: Successfully added item", data.id);
 
       // Also add initial price to history
       await supabase.from("price_history").insert({
@@ -121,7 +129,10 @@ export const useTrackedItems = () => {
   };
 
   const addMultipleItems = async (itemsList: AddItemParams[]): Promise<number> => {
+    console.log("addMultipleItems: Starting with", itemsList.length, "items, user:", user?.id);
+    
     if (!user) {
+      console.log("addMultipleItems: No user found");
       toast({
         title: "Sign in required",
         description: "Please sign in to track items",
@@ -135,6 +146,7 @@ export const useTrackedItems = () => {
       const result = await addItem(item);
       if (result) successCount++;
     }
+    console.log("addMultipleItems: Successfully added", successCount, "items");
     return successCount;
   };
 
