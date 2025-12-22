@@ -2,3 +2,6 @@ project_id = "kmxglhasyxutbqxupvoh"
 
 [functions.parse-receipt]
 verify_jwt = false
+
+[functions.check-price]
+verify_jwt = false
