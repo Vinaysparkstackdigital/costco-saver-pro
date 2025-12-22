@@ -14,7 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      price_history: {
+        Row: {
+          id: string
+          price: number
+          recorded_at: string
+          tracked_item_id: string
+        }
+        Insert: {
+          id?: string
+          price: number
+          recorded_at?: string
+          tracked_item_id: string
+        }
+        Update: {
+          id?: string
+          price?: number
+          recorded_at?: string
+          tracked_item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "price_history_tracked_item_id_fkey"
+            columns: ["tracked_item_id"]
+            isOneToOne: false
+            referencedRelation: "tracked_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tracked_items: {
+        Row: {
+          created_at: string
+          current_price: number
+          id: string
+          image_url: string | null
+          item_name: string
+          item_number: string | null
+          purchase_date: string
+          purchase_price: number
+          quantity: number | null
+          receipt_number: string | null
+          store_location: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_price: number
+          id?: string
+          image_url?: string | null
+          item_name: string
+          item_number?: string | null
+          purchase_date: string
+          purchase_price: number
+          quantity?: number | null
+          receipt_number?: string | null
+          store_location?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_price?: number
+          id?: string
+          image_url?: string | null
+          item_name?: string
+          item_number?: string | null
+          purchase_date?: string
+          purchase_price?: number
+          quantity?: number | null
+          receipt_number?: string | null
+          store_location?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

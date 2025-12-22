@@ -1,66 +1,26 @@
-import { TrendingDown, TrendingUp, Minus, ExternalLink } from "lucide-react";
+import { TrendingDown, TrendingUp, Minus, ExternalLink, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
-interface TrackedItem {
-  id: string;
-  name: string;
-  purchasePrice: number;
-  currentPrice: number;
-  purchaseDate: string;
-  daysLeft: number;
-  imageUrl?: string;
-}
-
-const mockItems: TrackedItem[] = [
-  {
-    id: "1",
-    name: "Kirkland Signature Olive Oil 2L",
-    purchasePrice: 24.99,
-    currentPrice: 18.99,
-    purchaseDate: "Dec 10, 2024",
-    daysLeft: 18,
-  },
-  {
-    id: "2",
-    name: "Sony 65\" Class X90L TV",
-    purchasePrice: 1299.99,
-    currentPrice: 1199.99,
-    purchaseDate: "Dec 5, 2024",
-    daysLeft: 13,
-  },
-  {
-    id: "3",
-    name: "Apple AirPods Pro (2nd Gen)",
-    purchasePrice: 189.99,
-    currentPrice: 169.99,
-    purchaseDate: "Dec 12, 2024",
-    daysLeft: 20,
-  },
-  {
-    id: "4",
-    name: "Kirkland Signature Paper Towels",
-    purchasePrice: 22.49,
-    currentPrice: 22.49,
-    purchaseDate: "Dec 8, 2024",
-    daysLeft: 16,
-  },
-  {
-    id: "5",
-    name: "Vitamix E320 Blender",
-    purchasePrice: 349.99,
-    currentPrice: 359.99,
-    purchaseDate: "Dec 1, 2024",
-    daysLeft: 9,
-  },
-];
+import { useTrackedItems } from "@/hooks/useTrackedItems";
+import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TrackedItems = () => {
+  const { items, loading, deleteItem } = useTrackedItems();
+  const { user } = useAuth();
+
   const getPriceChange = (purchase: number, current: number) => {
     const diff = purchase - current;
     const percent = ((diff / purchase) * 100).toFixed(1);
     return { diff, percent };
+  };
+
+  const getDaysLeft = (purchaseDate: string) => {
+    const purchase = new Date(purchaseDate);
+    const now = new Date();
+    const daysSince = Math.floor((now.getTime() - purchase.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.max(0, 30 - daysSince);
   };
 
   const getStatusInfo = (purchase: number, current: number) => {
@@ -90,6 +50,69 @@ const TrackedItems = () => {
     };
   };
 
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  if (!user) {
+    return (
+      <section className="animate-slide-up" style={{ animationDelay: "300ms" }}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
+            Tracked Items
+          </h2>
+        </div>
+        <Card className="p-8 border-0 shadow-card text-center">
+          <p className="text-muted-foreground">Sign in to start tracking your purchases</p>
+        </Card>
+      </section>
+    );
+  }
+
+  if (loading) {
+    return (
+      <section className="animate-slide-up" style={{ animationDelay: "300ms" }}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
+            Tracked Items
+          </h2>
+        </div>
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <Card key={i} className="p-4 border-0 shadow-card">
+              <div className="flex items-start gap-4">
+                <Skeleton className="w-12 h-12 rounded-xl" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <section className="animate-slide-up" style={{ animationDelay: "300ms" }}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
+            Tracked Items
+          </h2>
+        </div>
+        <Card className="p-8 border-0 shadow-card text-center">
+          <p className="text-muted-foreground">No items tracked yet. Upload a receipt to get started!</p>
+        </Card>
+      </section>
+    );
+  }
+
   return (
     <section className="animate-slide-up" style={{ animationDelay: "300ms" }}>
       <div className="flex items-center justify-between mb-4">
@@ -102,10 +125,13 @@ const TrackedItems = () => {
       </div>
 
       <div className="space-y-3">
-        {mockItems.map((item, index) => {
-          const { diff, percent } = getPriceChange(item.purchasePrice, item.currentPrice);
-          const status = getStatusInfo(item.purchasePrice, item.currentPrice);
-          const hasDrop = item.currentPrice < item.purchasePrice;
+        {items.map((item, index) => {
+          const purchasePrice = Number(item.purchase_price);
+          const currentPrice = Number(item.current_price);
+          const { diff, percent } = getPriceChange(purchasePrice, currentPrice);
+          const status = getStatusInfo(purchasePrice, currentPrice);
+          const hasDrop = currentPrice < purchasePrice;
+          const daysLeft = getDaysLeft(item.purchase_date);
 
           return (
             <Card
@@ -123,30 +149,40 @@ const TrackedItems = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h3 className="font-medium text-foreground truncate">{item.name}</h3>
+                      <h3 className="font-medium text-foreground truncate">{item.item_name}</h3>
                       <p className="text-sm text-muted-foreground">
-                        Purchased {item.purchaseDate} · {item.daysLeft} days left
+                        Purchased {formatDate(item.purchase_date)} · {daysLeft} days left
                       </p>
                     </div>
-                    <Badge 
-                      variant={status.badgeVariant}
-                      className={hasDrop ? "gradient-savings border-0" : ""}
-                    >
-                      {status.label}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant={status.badgeVariant}
+                        className={hasDrop ? "gradient-savings border-0" : ""}
+                      >
+                        {status.label}
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                        onClick={() => deleteItem(item.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
 
                   <div className="mt-3 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div>
                         <p className="text-xs text-muted-foreground">Paid</p>
-                        <p className="font-semibold text-foreground">${item.purchasePrice.toFixed(2)}</p>
+                        <p className="font-semibold text-foreground">${purchasePrice.toFixed(2)}</p>
                       </div>
                       <div className="text-muted-foreground">→</div>
                       <div>
                         <p className="text-xs text-muted-foreground">Current</p>
                         <p className={`font-semibold ${hasDrop ? "text-savings" : "text-foreground"}`}>
-                          ${item.currentPrice.toFixed(2)}
+                          ${currentPrice.toFixed(2)}
                         </p>
                       </div>
                       {diff !== 0 && (

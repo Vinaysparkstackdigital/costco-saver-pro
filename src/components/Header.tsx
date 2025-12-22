@@ -1,36 +1,71 @@
-import { Receipt, TrendingDown, Bell } from "lucide-react";
+import { useState } from "react";
+import { Receipt, TrendingDown, Bell, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import AuthDialog from "./AuthDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
+  const { user, signOut } = useAuth();
+  const [authOpen, setAuthOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center shadow-card">
-              <TrendingDown className="w-5 h-5 text-primary-foreground" />
+    <>
+      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center shadow-card">
+                <TrendingDown className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="font-heading text-xl font-bold text-foreground">PriceDrop</h1>
+                <p className="text-xs text-muted-foreground">Costco Savings Tracker</p>
+              </div>
             </div>
-            <div>
-              <h1 className="font-heading text-xl font-bold text-foreground">PriceDrop</h1>
-              <p className="text-xs text-muted-foreground">Costco Savings Tracker</p>
+            
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-savings rounded-full text-[10px] text-savings-foreground flex items-center justify-center font-bold">
+                  3
+                </span>
+              </Button>
+              
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <User className="w-4 h-4" />
+                      <span className="hidden sm:inline max-w-[120px] truncate">
+                        {user.email}
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => setAuthOpen(true)}>
+                  Sign In
+                </Button>
+              )}
             </div>
-          </div>
-          
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-savings rounded-full text-[10px] text-savings-foreground flex items-center justify-center font-bold">
-                3
-              </span>
-            </Button>
-            <Button variant="outline" size="sm" className="hidden sm:flex gap-2">
-              <Receipt className="w-4 h-4" />
-              Upload Receipt
-            </Button>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+      
+      <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
+    </>
   );
 };
 
