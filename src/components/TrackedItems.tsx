@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
 import { checkItemPrice } from "@/lib/priceChecker";
 import { useToast } from "@/hooks/use-toast";
+import { sendLocalPriceDropNotification, isPushNotificationsAvailable } from "@/lib/pushNotifications";
 
 const TrackedItems = () => {
   const { items, loading, deleteItem, updateCurrentPrice } = useTrackedItems();
@@ -99,6 +100,7 @@ const TrackedItems = () => {
     setCheckingPrices(true);
     let updatedCount = 0;
     let priceDropCount = 0;
+    const priceDropItems: Array<{ name: string; purchasePrice: number; currentPrice: number }> = [];
 
     for (const item of items) {
       setCheckingItemId(item.id);
@@ -106,12 +108,17 @@ const TrackedItems = () => {
         const result = await checkItemPrice(item.item_name, item.item_number ?? undefined);
         
         if (result.success && result.currentPrice) {
-          const oldPrice = Number(item.current_price);
           await updateCurrentPrice(item.id, result.currentPrice);
           updatedCount++;
           
-          if (result.currentPrice < Number(item.purchase_price)) {
+          const purchasePrice = Number(item.purchase_price);
+          if (result.currentPrice < purchasePrice) {
             priceDropCount++;
+            priceDropItems.push({
+              name: item.item_name,
+              purchasePrice,
+              currentPrice: result.currentPrice
+            });
           }
         }
         
@@ -124,6 +131,19 @@ const TrackedItems = () => {
 
     setCheckingItemId(null);
     setCheckingPrices(false);
+
+    // Send push notifications for price drops on mobile
+    if (isPushNotificationsAvailable() && priceDropItems.length > 0) {
+      for (const dropItem of priceDropItems) {
+        const savings = dropItem.purchasePrice - dropItem.currentPrice;
+        await sendLocalPriceDropNotification(
+          dropItem.name,
+          dropItem.purchasePrice,
+          dropItem.currentPrice,
+          savings
+        );
+      }
+    }
 
     if (priceDropCount > 0) {
       toast({
