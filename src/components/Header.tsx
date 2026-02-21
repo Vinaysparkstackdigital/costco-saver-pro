@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Receipt, TrendingDown, Bell, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { useTrackedItems } from "@/hooks/useTrackedItems";
 import AuthDialog from "./AuthDialog";
 import {
   DropdownMenu,
@@ -12,7 +13,15 @@ import {
 
 const Header = () => {
   const { user, signOut } = useAuth();
+  const { items } = useTrackedItems();
   const [authOpen, setAuthOpen] = useState(false);
+
+  // Calculate real alert count from items with price drops
+  const alertCount = items.filter(item => {
+    const purchasePrice = Number(item.purchase_price);
+    const currentPrice = Number(item.current_price);
+    return currentPrice < purchasePrice;
+  }).length;
 
   return (
     <>
@@ -32,9 +41,11 @@ const Header = () => {
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-savings rounded-full text-[10px] text-savings-foreground flex items-center justify-center font-bold">
-                  3
-                </span>
+                {alertCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-savings rounded-full text-[10px] text-savings-foreground flex items-center justify-center font-bold">
+                    {alertCount > 9 ? "9+" : alertCount}
+                  </span>
+                )}
               </Button>
               
               {user ? (

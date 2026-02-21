@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react";
-import { Upload, FileText, X, CheckCircle, Loader2, Sparkles, Eye } from "lucide-react";
+import { Upload, FileText, X, CheckCircle, Loader2, Sparkles, Eye, Camera } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +22,11 @@ const ReceiptUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null);
+  const [cameraActive, setCameraActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
   const { addMultipleItems } = useTrackedItems();
   const { user } = useAuth();
@@ -149,6 +153,21 @@ const ReceiptUpload = () => {
     setFiles((prev) => prev.filter((f) => f.name !== name));
   };
 
+  const handleCameraCapture = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files;
+    if (selectedFiles && selectedFiles.length > 0) {
+      processFile(selectedFiles[0]);
+    }
+    setCameraActive(false);
+    if (cameraInputRef.current) {
+      cameraInputRef.current.value = "";
+    }
+  };
+
+  const handleOpenCamera = () => {
+    cameraInputRef.current?.click();
+  };
+
   const getStatusIcon = (status: UploadedFile["status"]) => {
     switch (status) {
       case "uploading":
@@ -164,107 +183,141 @@ const ReceiptUpload = () => {
   return (
     <>
       <section className="animate-slide-up" style={{ animationDelay: "200ms" }}>
-        <h2 className="font-heading text-lg font-semibold text-foreground mb-4">
-          Upload Receipts
-        </h2>
-        <Card className="p-6 border-0 shadow-card bg-card">
-          <div
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
-              isDragging
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/50"
-            }`}
-          >
-            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Upload className="w-7 h-7 text-primary" />
-            </div>
-            <h3 className="font-heading font-semibold text-foreground mb-2">
-              Drop your Costco receipts here
-            </h3>
-            <p className="text-sm text-muted-foreground mb-2">
-              Supports JPG, PNG files up to 10MB
-            </p>
-            <div className="flex items-center justify-center gap-2 text-xs text-accent mb-4">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>AI-powered OCR extracts items automatically</span>
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
+        <Card className="p-0 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-primary/5 via-card to-card overflow-hidden">
+          <div className="p-8 md:p-10">
+            <div
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+              className={`border-2 border-dashed rounded-2xl p-8 md:p-12 text-center transition-all duration-200 ${
+                isDragging
+                  ? "border-primary bg-primary/10 scale-105"
+                  : "border-border hover:border-primary/50 hover:bg-primary/5"
+              }`}
             >
-              <FileText className="w-4 h-4 mr-2" />
-              Browse Files
-            </Button>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg">
+                <Upload className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <h3 className="font-heading text-2xl font-bold text-foreground mb-3">
+                Start Tracking Now
+              </h3>
+              <p className="text-base text-muted-foreground mb-2">
+                Upload or photograph your Costco receipt
+              </p>
+              <p className="text-sm text-muted-foreground mb-6">
+                Supports JPG, PNG files up to 10MB
+              </p>
+              <div className="flex items-center justify-center gap-2 text-sm text-primary mb-8 bg-primary/10 rounded-lg py-3 px-4">
+                <Sparkles className="w-4 h-4" />
+                <span className="font-medium">AI-powered OCR automatically extracts items</span>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handleCameraCapture}
+                className="hidden"
+              />
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full sm:w-auto text-base font-semibold"
+                >
+                  <FileText className="w-5 h-5 mr-2" />
+                  Browse Files
+                </Button>
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  onClick={handleOpenCamera}
+                  className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Camera className="w-5 h-5 mr-2" />
+                  Take Picture
+                </Button>
+              </div>
+            </div>
           </div>
 
           {files.length > 0 && (
-            <div className="mt-6 space-y-3">
-              <h4 className="text-sm font-medium text-foreground">Recent Uploads</h4>
-              {files.map((file) => (
-                <div
-                  key={file.name}
-                  className={`flex items-center justify-between p-3 rounded-lg ${
-                    file.status === "error" ? "bg-destructive/10" : "bg-secondary/50"
-                  }`}
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                      file.status === "error" ? "bg-destructive/20" : "bg-primary/10"
-                    }`}>
-                      <FileText className={`w-4 h-4 ${
-                        file.status === "error" ? "text-destructive" : "text-primary"
-                      }`} />
+            <div className="border-t border-border bg-secondary/30 p-6 md:p-8">
+              <h4 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-accent" />
+                Recent Uploads
+              </h4>
+              <div className="space-y-2">
+                {files.map((file) => (
+                  <div
+                    key={file.name}
+                    className={`flex items-center justify-between p-4 rounded-xl transition-all duration-200 ${
+                      file.status === "error" 
+                        ? "bg-destructive/10 border border-destructive/30" 
+                        : "bg-accent/10 border border-accent/30"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                        file.status === "error" ? "bg-destructive/20" : "bg-accent/20"
+                      }`}>
+                        <FileText className={`w-5 h-5 ${
+                          file.status === "error" ? "text-destructive" : "text-accent"
+                        }`} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {file.status === "processing" ? (
+                            <span className="flex items-center gap-1">
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              Extracting items with AI...
+                            </span>
+                          ) : file.status === "complete" && file.items ? (
+                            <span className="text-accent font-medium">
+                              ✓ {file.trackedCount ? `${file.trackedCount} items tracked` : `${file.items.length} items extracted`}
+                            </span>
+                          ) : file.status === "error" ? (
+                            <span className="text-destructive">✗ {file.error}</span>
+                          ) : (
+                            file.size
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {file.status === "processing" ? (
-                          "Extracting items with AI..."
-                        ) : file.status === "complete" && file.items ? (
-                          <span className="text-accent">
-                            {file.trackedCount ? `${file.trackedCount} items tracked` : `${file.items.length} items extracted`}
-                          </span>
-                        ) : file.status === "error" ? (
-                          <span className="text-destructive">{file.error}</span>
-                        ) : (
-                          file.size
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {getStatusIcon(file.status)}
-                    {file.status === "complete" && file.items && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => setSelectedFile(file)}
+                    <div className="flex items-center gap-2 shrink-0">
+                      {getStatusIcon(file.status)}
+                      {file.status === "complete" && file.items && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 hover:bg-primary/20"
+                          onClick={() => setSelectedFile(file)}
+                          title="View extracted items"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      )}
+                      <button
+                        onClick={() => removeFile(file.name)}
+                        className="p-1 hover:bg-destructive/20 rounded transition-colors"
+                        title="Remove"
                       >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                    )}
-                    <button
-                      onClick={() => removeFile(file.name)}
-                      className="p-1 hover:bg-secondary rounded transition-colors"
-                    >
-                      <X className="w-4 h-4 text-muted-foreground" />
-                    </button>
+                        <X className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </Card>
