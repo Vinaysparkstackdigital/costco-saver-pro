@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "575353902310",
+    "project_id": "costco-saver-pro",
+    "storage_bucket": "costco-saver-pro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575353902310:android:36645a85f293eefd54d727",
+        "android_client_info": {
+          "package_name": "com.saisandeep.costcosaverpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxcYtIZiPVYXD8D7B68-wZjrVl6xrqQvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
