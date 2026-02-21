@@ -1,23 +1,46 @@
+/* ================================
+   ROOT – MOBILE FIRST
+================================ */
 #root {
-  max-width: 1280px;
+  width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 1rem;
+  overflow-x: hidden;
 }
 
+/* Desktop enhancement only */
+@media (min-width: 1024px) {
+  #root {
+    max-width: 1280px;
+    padding: 2rem;
+  }
+}
+
+/* ================================
+   LOGO
+================================ */
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  max-width: 8rem;
+  height: auto;
+  padding: 1rem;
+  margin: 0 auto;
+  display: block;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 1.5em #646cffaa);
 }
 
+.logo.react:hover {
+  filter: drop-shadow(0 0 1.5em #61dafbaa);
+}
+
+/* ================================
+   ANIMATIONS
+================================ */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -33,10 +56,39 @@
   }
 }
 
+/* ================================
+   CARD
+================================ */
 .card {
-  padding: 2em;
+  width: 100%;
+  padding: 1.25rem;
+  box-sizing: border-box;
 }
 
+/* ================================
+   TEXT
+================================ */
 .read-the-docs {
   color: #888;
+  font-size: 0.875rem;
+}
+
+/* ================================
+   GLOBAL SAFETY (CRITICAL)
+================================ */
+* {
+  box-sizing: border-box;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent mobile horizontal scroll */
+body {
+  overflow-x: hidden;
 }
