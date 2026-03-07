@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DollarSign, TrendingDown, Package, Clock, X, ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,61 @@ const SavingsOverview = () => {
   const { items, getTotalSavings, getPriceDropCount } = useTrackedItems();
   const { user } = useAuth();
   const [selectedStat, setSelectedStat] = useState<string | null>(null);
+
+  const preventScroll = useCallback((e: TouchEvent) => {
+    // Only prevent scroll if touch is NOT on the modal content
+    const modalContent = document.querySelector('[data-modal-content]');
+    if (modalContent && !modalContent.contains(e.target as Node)) {
+      e.preventDefault();
+    }
+  }, []);
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (selectedStat) {
+      // Lock scroll on body and html
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.position = "fixed";
+      document.documentElement.style.width = "100%";
+      document.documentElement.style.height = "100vh";
+      
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.height = "100vh";
+      
+      // Add touch event listener to prevent scroll
+      document.addEventListener("touchmove", preventScroll, { passive: false });
+    } else {
+      // Unlock scroll
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.position = "";
+      document.documentElement.style.width = "";
+      document.documentElement.style.height = "";
+      
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
+      
+      document.removeEventListener("touchmove", preventScroll);
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.position = "";
+      document.documentElement.style.width = "";
+      document.documentElement.style.height = "";
+      
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
+      
+      document.removeEventListener("touchmove", preventScroll);
+    };
+  }, [selectedStat, preventScroll]);
 
   const totalSavings = getTotalSavings();
   const priceDrops = getPriceDropCount();
@@ -217,8 +272,8 @@ const SavingsOverview = () => {
 
       {/* Modal for displaying stat details */}
       {selectedStat && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-2xl max-h-[90vh] border-0 shadow-2xl overflow-hidden bg-card">
+        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4 pointer-events-auto" style={{ touchAction: "none" }}>
+          <Card className="w-full max-w-2xl max-h-[90vh] border-0 shadow-2xl overflow-hidden bg-card pointer-events-auto" data-modal-content style={{ touchAction: "auto" }}>
             {/* Header */}
             <div className="sticky top-0 flex items-center justify-between p-6 border-b border-border bg-secondary/50">
               <h3 className="font-heading text-xl font-semibold text-foreground">
@@ -233,7 +288,7 @@ const SavingsOverview = () => {
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto p-6">
+            <div className="overflow-y-auto p-6" style={{ touchAction: "pan-y" }}>
               {getModalContent().items.length > 0 ? (
                 <div className="space-y-3">
                   {getModalContent().items.map(item => getModalContent().renderItem(item))}
