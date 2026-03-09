@@ -29,9 +29,9 @@ const Header = () => {
       <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0">
               <CostcoSaverLogo width={56} height={40} />
-              <div>
+              <div className="ml-1">
                 <h1 className="font-heading text-xl font-bold text-foreground">CostcoSaver</h1>
                 <p className="text-xs text-muted-foreground">Smart Price Tracking</p>
               </div>
