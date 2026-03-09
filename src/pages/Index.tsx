@@ -8,10 +8,10 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>PriceDrop - Costco Price Tracker & Refund Assistant</title>
+        <title>CostcoSaver - Track Price Drops & Claim Refunds Automatically</title>
         <meta 
           name="description" 
-          content="Automatically track price drops on your Costco purchases and claim refunds with ease. Save money on every shopping trip." 
+          content="Smart Costco price monitoring that automatically tracks price drops and notifies you about refunds. Save money on every shopping trip." 
         />
       </Helmet>
 
@@ -23,10 +23,10 @@ const Index = () => {
             {/* Hero Section */}
             <section className="text-center py-6 md:py-12 animate-fade-in">
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
-                Save on <span className="text-primary">Every Purchase</span>
+                Save More on <span className="text-primary">Costco Purchases</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Snap a photo of your receipt. We'll track prices and notify you about drops so you can claim refunds instantly.
+                Snap a receipt photo. CostcoSaver tracks price drops and automatically notifies you about refunds you can claim within 30 days.
               </p>
             </section>
 
@@ -57,9 +57,9 @@ const Index = () => {
         <footer className="mt-20 py-8 border-t border-border bg-card/30">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-              <p>© 2026 SparkStack Digital LLC. Not affiliated with Costco Wholesale.</p>
+              <p>© 2026 CostcoSaver by SparkStack Digital LLC. Not affiliated with Costco Wholesale Corporation.</p>
               <p>
-                Costco's price adjustment policy allows refunds within 30 days of purchase.
+                Costco's price adjustment policy allows refunds within 30 days of purchase. Always verify with Costco before claiming refunds.
               </p>
             </div>
           </div>
