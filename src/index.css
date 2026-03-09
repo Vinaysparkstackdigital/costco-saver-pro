@@ -15,14 +15,16 @@
 
   html, body, #root {
     width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
     overflow-x: hidden; /* 🚫 Kill horizontal scroll */
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'DM Sans', sans-serif;
-    overscroll-behavior: none;
+    overflow-y: auto; /* Allow vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overscroll-behavior-y: contain; /* Prevent overscroll bounce */
   }
 
   img, svg, video, canvas {
