@@ -12,42 +12,46 @@ const CostcoSaverLogo = ({ size = 'md', className = '' }: CostcoSaverLogoProps) 
 
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox="0 0 120 120"
       className={`${sizeMap[size]} ${className}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Background circle */}
-      <circle cx="50" cy="50" r="48" fill="#E8F3FF" stroke="#2563EB" strokeWidth="2" />
+      {/* Outer Circle Background */}
+      <circle cx="60" cy="60" r="56" fill="#F0F7FF" stroke="#2563EB" strokeWidth="2" />
 
-      {/* Warehouse building shape - represents Costco warehouse */}
+      {/* Inner Circle for definition */}
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#E0ECFF" strokeWidth="1" />
+
+      {/* Letter C */}
       <path
-        d="M 30 65 L 30 35 L 50 25 L 70 35 L 70 65"
-        fill="#D4A574"
-        stroke="#B8860B"
-        strokeWidth="2"
+        d="M 35 45 Q 35 35 45 35 L 50 35 Q 55 35 55 40 L 55 80 Q 55 85 50 85 L 45 85 Q 35 85 35 75"
+        fill="none"
+        stroke="#2563EB"
+        strokeWidth="6"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
 
-      {/* Roof accents */}
-      <line x1="40" y1="45" x2="60" y2="45" stroke="#B8860B" strokeWidth="1.5" />
-      <line x1="42" y1="52" x2="58" y2="52" stroke="#B8860B" strokeWidth="1.5" />
+      {/* Letter S */}
+      <path
+        d="M 65 40 Q 65 35 75 35 Q 83 35 83 42 Q 83 48 75 50 Q 65 52 65 58 Q 65 65 75 65 Q 83 65 83 72 Q 83 82 72 85 Q 65 85 65 80"
+        fill="none"
+        stroke="#2563EB"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
 
-      {/* Door/entrance */}
-      <rect x="45" y="55" width="10" height="12" fill="#8B6914" rx="1" />
-
-      {/* Dollar sign - represents savings/refunds */}
-      <g transform="translate(75, 30)">
-        {/* Circle background for dollar sign */}
-        <circle cx="0" cy="0" r="10" fill="#10B981" />
-
-        {/* Dollar sign */}
+      {/* Dollar Sign Accent - Green */}
+      <g transform="translate(60, 105)">
+        <circle cx="0" cy="0" r="8" fill="#10B981" opacity="0.9" />
         <text
           x="0"
-          y="0"
+          y="1"
           textAnchor="middle"
           dominantBaseline="central"
-          fontSize="14"
+          fontSize="12"
           fontWeight="bold"
           fill="white"
           fontFamily="Arial, sans-serif"
@@ -56,10 +60,11 @@ const CostcoSaverLogo = ({ size = 'md', className = '' }: CostcoSaverLogoProps) 
         </text>
       </g>
 
-      {/* Upward arrow - represents growth/savings increase */}
-      <g transform="translate(75, 30)\">
+      {/* Upward Arrow Accent */}
+      <g transform="translate(95, 60)">
+        <circle cx="0" cy="0" r="8" fill="#10B981" opacity="0.9" />
         <path
-          d="M 0 -5 L 0 3 M -2.5 1 L 0 3 L 2.5 1"
+          d="M 0 -3 L 0 3 M -2 1.5 L 0 3.5 L 2 1.5"
           stroke="white"
           strokeWidth="1.5"
           fill="none"
