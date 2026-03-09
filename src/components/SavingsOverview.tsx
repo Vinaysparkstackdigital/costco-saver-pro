@@ -13,30 +13,25 @@ const SavingsOverview = () => {
   // Prevent background scroll when modal is open
   useEffect(() => {
     if (selectedStat) {
-      // Store current scroll position
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
+      const root = document.getElementById('root');
+      if (root) {
+        root.style.overflow = 'hidden';
+      }
     } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
       document.body.style.overflow = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      const root = document.getElementById('root');
+      if (root) {
+        root.style.overflow = '';
       }
     }
 
-    // Cleanup on unmount
     return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
       document.body.style.overflow = '';
+      const root = document.getElementById('root');
+      if (root) {
+        root.style.overflow = '';
+      }
     };
   }, [selectedStat]);
 
@@ -247,8 +242,8 @@ const SavingsOverview = () => {
 
       {/* Modal for displaying stat details */}
       {selectedStat && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4" onClick={() => setSelectedStat(null)}>
-          <Card className="w-full max-w-2xl max-h-[90vh] border-0 shadow-2xl bg-card flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedStat(null)}>
+          <Card className="w-full max-w-2xl h-[90vh] border-0 shadow-2xl bg-card flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-border bg-secondary/50 flex-shrink-0">
               <h3 className="font-heading text-xl font-semibold text-foreground">
@@ -263,7 +258,7 @@ const SavingsOverview = () => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-scroll p-6" style={{ WebkitOverflowScrolling: 'touch' }}>
               {getModalContent().items.length > 0 ? (
                 <div className="space-y-3">
                   {getModalContent().items.map(item => getModalContent().renderItem(item))}
