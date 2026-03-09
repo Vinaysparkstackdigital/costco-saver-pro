@@ -57,7 +57,7 @@ const Index = () => {
         <footer className="mt-20 py-8 border-t border-border bg-card/30">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-              <p>© 2024 PriceDrop. Not affiliated with Costco Wholesale.</p>
+              <p>© 2026 SparkStack Digital LLC. Not affiliated with Costco Wholesale.</p>
               <p>
                 Costco's price adjustment policy allows refunds within 30 days of purchase.
               </p>
