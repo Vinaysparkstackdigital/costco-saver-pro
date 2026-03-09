@@ -9,7 +9,7 @@ const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSav
   <svg
     width={width}
     height={height}
-    viewBox="0 0 260 60"
+    viewBox="0 0 120 60"
     fill="none"
     className={className}
     xmlns="http://www.w3.org/2000/svg"
@@ -29,9 +29,9 @@ const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSav
     >
       C
     </text>
-    {/* Blue 'ostco' */}
+    {/* Bold italic blue S */}
     <text
-      x="38"
+      x="50"
       y="45"
       fontFamily="Montserrat, Arial, sans-serif"
       fontSize="48"
@@ -40,27 +40,14 @@ const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSav
       fill="#005DAA"
       letterSpacing="-2"
     >
-      ostco
-    </text>
-    {/* Blue 'Saver' */}
-    <text
-      x="150"
-      y="45"
-      fontFamily="Montserrat, Arial, sans-serif"
-      fontSize="48"
-      fontWeight="bold"
-      fontStyle="italic"
-      fill="#005DAA"
-      letterSpacing="-2"
-    >
-      Saver
+      S
     </text>
     {/* Green dollar sign accent */}
     <text
-      x="230"
-      y="40"
+      x="95"
+      y="25"
       fontFamily="Montserrat, Arial, sans-serif"
-      fontSize="24"
+      fontSize="18"
       fontWeight="bold"
       fill="#10B981"
     >
