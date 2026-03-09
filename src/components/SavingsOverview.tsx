@@ -13,25 +13,20 @@ const SavingsOverview = () => {
   // Prevent background scroll when modal is open
   useEffect(() => {
     if (selectedStat) {
-      // Lock scroll on body only
+      // Simply hide the scrollbar but keep ability to scroll
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
-      document.body.style.height = "100vh";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
       // Unlock scroll
       document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-      document.body.style.height = "";
+      document.body.style.paddingRight = "";
     }
 
     // Cleanup on unmount
     return () => {
       document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-      document.body.style.height = "";
+      document.body.style.paddingRight = "";
     };
   }, [selectedStat]);
 
@@ -242,10 +237,10 @@ const SavingsOverview = () => {
 
       {/* Modal for displaying stat details */}
       {selectedStat && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4 pointer-events-auto" style={{ touchAction: "none" }}>
-          <Card className="w-full max-w-2xl max-h-[90vh] border-0 shadow-2xl overflow-hidden bg-card pointer-events-auto" style={{ touchAction: "auto" }}>
+        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4" onClick={() => setSelectedStat(null)}>
+          <Card className="w-full max-w-2xl max-h-[90vh] border-0 shadow-2xl bg-card flex flex-col" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
-            <div className="sticky top-0 flex items-center justify-between p-6 border-b border-border bg-secondary/50">
+            <div className="flex items-center justify-between p-6 border-b border-border bg-secondary/50 flex-shrink-0">
               <h3 className="font-heading text-xl font-semibold text-foreground">
                 {getModalContent().title}
               </h3>
@@ -258,7 +253,7 @@ const SavingsOverview = () => {
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto p-6" style={{ touchAction: "pan-y" }}>
+            <div className="flex-1 overflow-y-auto p-6">
               {getModalContent().items.length > 0 ? (
                 <div className="space-y-3">
                   {getModalContent().items.map(item => getModalContent().renderItem(item))}
@@ -272,7 +267,7 @@ const SavingsOverview = () => {
 
             {/* Footer */}
             {getModalContent().items.length > 0 && (
-              <div className="border-t border-border p-6 bg-secondary/30 flex justify-end gap-3">
+              <div className="border-t border-border p-6 bg-secondary/30 flex justify-end gap-3 flex-shrink-0">
                 <Button
                   variant="outline"
                   onClick={() => setSelectedStat(null)}
