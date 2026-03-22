@@ -1,4 +1,4 @@
-package com.saisandeep.costcosaverpro;
+package com.sparkstack.costcosaver;
 
 import com.getcapacitor.BridgeActivity;
 

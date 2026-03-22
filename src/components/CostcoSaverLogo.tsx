@@ -4,40 +4,40 @@ interface CostcoSaverLogoProps {
   className?: string;
 }
 
-// Costco-inspired, copyright-safe wordmark logo
+const red = "#E31837";
+const blue = "#005DAA";
+
 const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSaverLogoProps) => (
   <svg
     width={width}
     height={height}
-    viewBox="0 0 80 60"
+    viewBox="0 0 96 64"
     fill="none"
     className={className}
     xmlns="http://www.w3.org/2000/svg"
     aria-label="CostcoSaver logo"
     role="img"
   >
-    {/* Bold italic red C */}
     <text
-      x="2"
-      y="45"
-      fontFamily="Montserrat, Arial, sans-serif"
-      fontSize="48"
-      fontWeight="bold"
+      x="-2"
+      y="54"
+      fill={red}
+      fontFamily="'Avenir Next', 'Helvetica Neue', Arial, sans-serif"
+      fontSize="60"
       fontStyle="italic"
-      fill="#E31837"
+      fontWeight="800"
       letterSpacing="-6"
     >
       C
     </text>
-    {/* Bold italic blue S */}
     <text
-      x="35"
-      y="45"
-      fontFamily="Montserrat, Arial, sans-serif"
-      fontSize="48"
-      fontWeight="bold"
+      x="41"
+      y="54"
+      fill={blue}
+      fontFamily="'Avenir Next', 'Helvetica Neue', Arial, sans-serif"
+      fontSize="60"
       fontStyle="italic"
-      fill="#005DAA"
+      fontWeight="800"
       letterSpacing="-6"
     >
       S

@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.saisandeep.costcosaverpro"
+    namespace = "com.sparkstack.costcosaver"
     compileSdk = rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.saisandeep.costcosaverpro"
+        applicationId "com.sparkstack.costcosaver"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

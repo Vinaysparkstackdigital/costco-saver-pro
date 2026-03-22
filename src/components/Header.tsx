@@ -26,19 +26,26 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0">
-              <CostcoSaverLogo width={56} height={40} />
-              <div className="ml-1">
-                <h1 className="font-heading text-xl font-bold text-foreground">CostcoSaver</h1>
-                <p className="text-xs text-muted-foreground">Smart Price Tracking</p>
+      <header
+        className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur-md"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
+        <div className="container mx-auto px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+              <CostcoSaverLogo width={44} height={32} className="shrink-0 sm:h-10 sm:w-14" />
+              <div className="min-w-0">
+                <h1 className="truncate font-heading text-lg font-bold leading-none text-foreground sm:text-xl">
+                  CostcoSaver
+                </h1>
+                <p className="hidden text-[11px] text-muted-foreground min-[360px]:block">
+                  Smart Price Tracking
+                </p>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="relative">
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+              <Button variant="ghost" size="icon" className="relative h-9 w-9">
                 <Bell className="w-5 h-5" />
                 {alertCount > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-savings rounded-full text-[10px] text-savings-foreground flex items-center justify-center font-bold">
@@ -65,7 +72,7 @@ const Header = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button variant="outline" size="sm" onClick={() => setAuthOpen(true)}>
+                <Button variant="outline" size="sm" className="px-3 sm:px-4" onClick={() => setAuthOpen(true)}>
                   Sign In
                 </Button>
               )}

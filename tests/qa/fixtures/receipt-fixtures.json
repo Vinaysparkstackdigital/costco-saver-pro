@@ -1,0 +1,85 @@
+{
+  "valid-receipt.jpg": {
+    "success": true,
+    "items": [
+      {
+        "name": "Kirkland Almond Butter",
+        "price": 8.99,
+        "quantity": 1,
+        "itemNumber": "1001"
+      }
+    ],
+    "metadata": {
+      "storeLocation": "San Jose Warehouse",
+      "purchaseDate": "2025-02-10",
+      "receiptNumber": "R-100"
+    }
+  },
+  "multi-item-receipt.jpg": {
+    "success": true,
+    "items": [
+      {
+        "name": "Kirkland Almond Butter",
+        "price": 8.99,
+        "quantity": 1,
+        "itemNumber": "1001"
+      },
+      {
+        "name": "Organic Blueberries",
+        "price": 6.49,
+        "quantity": 2,
+        "itemNumber": "1002"
+      },
+      {
+        "name": "Rotisserie Chicken",
+        "price": 4.99,
+        "quantity": 1,
+        "itemNumber": "1003"
+      }
+    ],
+    "metadata": {
+      "storeLocation": "San Jose Warehouse",
+      "purchaseDate": "2025-02-10",
+      "receiptNumber": "R-101"
+    }
+  },
+  "blurry-receipt.jpg": {
+    "success": false,
+    "error": "Image quality too low for OCR"
+  },
+  "partial-receipt.jpg": {
+    "success": true,
+    "items": [
+      {
+        "name": "Organic Blueberries",
+        "price": 6.49,
+        "quantity": 1,
+        "itemNumber": "1002"
+      }
+    ],
+    "metadata": {
+      "storeLocation": "San Jose Warehouse",
+      "receiptNumber": "R-102"
+    }
+  },
+  "unsupported-receipt.txt": {
+    "success": false,
+    "error": "Unsupported file type"
+  },
+  "large-receipt.jpg": {
+    "success": true,
+    "items": [
+      {
+        "name": "Paper Towels",
+        "price": 19.99,
+        "quantity": 1,
+        "itemNumber": "2001"
+      }
+    ],
+    "metadata": {
+      "storeLocation": "Sunnyvale Warehouse",
+      "purchaseDate": "2025-02-11",
+      "receiptNumber": "R-103"
+    }
+  }
+}

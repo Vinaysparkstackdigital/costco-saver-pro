@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { parseReceiptImage, ParsedItem, ReceiptMetadata } from "@/lib/receiptParser";
+import { captureReceiptImage, CameraSource, isNativePlatform } from "@/lib/native";
 import { useTrackedItems } from "@/hooks/useTrackedItems";
 import { useAuth } from "@/hooks/useAuth";
 import ParsedItemsDialog from "./ParsedItemsDialog";
@@ -22,11 +23,8 @@ const ReceiptUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null);
-  const [cameraActive, setCameraActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
   const { addMultipleItems } = useTrackedItems();
   const { user } = useAuth();
@@ -142,7 +140,7 @@ const ReceiptUpload = () => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
-      processFile(selectedFiles[0]);
+      void processFile(selectedFiles[0]);
     }
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -156,15 +154,41 @@ const ReceiptUpload = () => {
   const handleCameraCapture = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
-      processFile(selectedFiles[0]);
+      await processFile(selectedFiles[0]);
     }
-    setCameraActive(false);
     if (cameraInputRef.current) {
       cameraInputRef.current.value = "";
     }
   };
 
+  const handleNativeImageSelection = async (source: CameraSource) => {
+    try {
+      const file = await captureReceiptImage(source);
+      await processFile(file);
+    } catch (error) {
+      toast({
+        title: "Unable to access photo",
+        description: error instanceof Error ? error.message : "Please check camera and photo permissions.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBrowseFiles = () => {
+    if (isNativePlatform()) {
+      void handleNativeImageSelection(CameraSource.Photos);
+      return;
+    }
+
+    fileInputRef.current?.click();
+  };
+
   const handleOpenCamera = () => {
+    if (isNativePlatform()) {
+      void handleNativeImageSelection(CameraSource.Camera);
+      return;
+    }
+
     cameraInputRef.current?.click();
   };
 
@@ -206,7 +230,7 @@ const ReceiptUpload = () => {
                 Upload or photograph your Costco receipt
               </p>
               <p className="text-sm text-muted-foreground mb-6">
-                Supports JPG, PNG files up to 10MB
+                Supports camera capture plus JPG, PNG, or PDF receipts up to 10MB
               </p>
               <div className="flex items-center justify-center gap-2 text-sm text-primary mb-8 bg-primary/10 rounded-lg py-3 px-4">
                 <Sparkles className="w-4 h-4" />
@@ -215,7 +239,7 @@ const ReceiptUpload = () => {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/*,.pdf,application/pdf"
                 onChange={handleFileSelect}
                 className="hidden"
               />
@@ -231,11 +255,11 @@ const ReceiptUpload = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={handleBrowseFiles}
                   className="w-full sm:w-auto text-base font-semibold"
                 >
                   <FileText className="w-5 h-5 mr-2" />
-                  Browse Files
+                  {isNativePlatform() ? "Photo Library" : "Browse Files"}
                 </Button>
                 <Button 
                   variant="default" 

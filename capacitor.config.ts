@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.saisandeep.costcosaverpro',
-  appName: 'Costco Saver Pro',
+  appId: 'com.sparkstack.costcosaver',
+  appName: 'CostcoSaver',
   webDir: 'dist'
 };
 

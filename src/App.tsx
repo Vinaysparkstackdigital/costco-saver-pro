@@ -9,15 +9,26 @@ import Index from "./pages/Index";
 import TrackedItemsPage from "./pages/TrackedItemsPage";
 import NotFound from "./pages/NotFound";
 import { registerPushNotifications, isPushNotificationsAvailable } from "@/lib/pushNotifications";
+import { registerNativeAuthCallbackListener } from "@/lib/native";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
+    let removeAuthListener: (() => void) | undefined;
+
+    void registerNativeAuthCallbackListener().then((cleanup) => {
+      removeAuthListener = cleanup;
+    });
+
     // Register for push notifications on native platforms
     if (isPushNotificationsAvailable()) {
-      registerPushNotifications();
+      void registerPushNotifications();
     }
+
+    return () => {
+      removeAuthListener?.();
+    };
   }, []);
 
   return (

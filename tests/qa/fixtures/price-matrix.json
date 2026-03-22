@@ -1,0 +1,24 @@
+{
+  "single-item-drop": {
+    "tracked-1": 6.99
+  },
+  "single-item-no-change": {
+    "tracked-1": 8.99
+  },
+  "multi-item-drop": {
+    "tracked-1": 7.99,
+    "tracked-2": 5.99,
+    "tracked-3": 4.99
+  },
+  "multi-user-shared-item": {
+    "tracked-1": 6.99,
+    "tracked-2": 6.99
+  },
+  "large-batch": {
+    "tracked-1": 9.5,
+    "tracked-2": 10.5,
+    "tracked-3": 11.5,
+    "tracked-4": 12.5,
+    "tracked-5": 13.5
+  }
+}

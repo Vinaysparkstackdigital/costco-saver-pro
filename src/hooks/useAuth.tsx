@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getAuthRedirectUrl } from "@/lib/native";
 
 interface AuthContextType {
   user: User | null;
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`;
+    const redirectUrl = getAuthRedirectUrl();
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -58,43 +59,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: error as Error | null };
   };
 
-  const signInWithGoogle = async () => {
-    const redirectUrl = `${window.location.origin}/`;
+  const signInWithOAuth = async (provider: 'google' | 'apple' | 'facebook') => {
+    const redirectUrl = getAuthRedirectUrl();
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider,
       options: {
         redirectTo: redirectUrl,
       },
     });
+
     if (error) {
       throw error;
     }
+  };
+
+  const signInWithGoogle = async () => {
+    await signInWithOAuth('google');
   };
 
   const signInWithApple = async () => {
-    const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'apple',
-      options: {
-        redirectTo: redirectUrl,
-      },
-    });
-    if (error) {
-      throw error;
-    }
+    await signInWithOAuth('apple');
   };
 
   const signInWithFacebook = async () => {
-    const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'facebook',
-      options: {
-        redirectTo: redirectUrl,
-      },
-    });
-    if (error) {
-      throw error;
-    }
+    await signInWithOAuth('facebook');
   };
 
   const signOut = async () => {
