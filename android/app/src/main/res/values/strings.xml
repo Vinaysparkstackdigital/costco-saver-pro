@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">CostcoSaver</string>
-    <string name="title_activity_main">CostcoSaver</string>
+    <string name="app_name">Cost Saver</string>
+    <string name="title_activity_main">Cost Saver</string>
     <string name="package_name">com.sparkstack.costcosaver</string>
     <string name="custom_url_scheme">com.sparkstack.costcosaver</string>
 </resources>

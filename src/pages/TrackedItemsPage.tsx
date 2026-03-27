@@ -11,7 +11,7 @@ const TrackedItemsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Tracked Items - CostcoSaver</title>
+        <title>Tracked Items - Cost Saver</title>
         <meta 
           name="description" 
           content="View and manage all your tracked Costco items and price updates." 
@@ -55,7 +55,7 @@ const TrackedItemsPage = () => {
         <footer className="mt-16 py-8 border-t border-border bg-card/50">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-              <p>© 2026 CostcoSaver by SparkStack Digital LLC. Not affiliated with Costco Wholesale Corporation.</p>
+              <p>© 2026 Cost Saver by SparkStack Digital LLC. Not affiliated with Costco Wholesale Corporation.</p>
               <p>
                 Costco's price adjustment policy allows refunds within 30 days of purchase.
               </p>

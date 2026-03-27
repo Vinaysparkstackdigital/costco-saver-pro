@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>CostcoSaver</string>
+	<string>Cost Saver</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +24,12 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Cost Saver needs camera access so you can photograph receipts for price tracking.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cost Saver needs photo library access so you can upload receipt images.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Cost Saver may save receipt photos you choose to capture during upload.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

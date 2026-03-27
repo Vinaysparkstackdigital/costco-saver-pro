@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrackedItems } from "@/hooks/useTrackedItems";
 import AuthDialog from "./AuthDialog";
-import CostcoSaverLogo from "./CostcoSaverLogo";
+import CostSaverLogo from "./CostSaverLogo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,10 +33,10 @@ const Header = () => {
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-              <CostcoSaverLogo width={44} height={32} className="shrink-0 sm:h-10 sm:w-14" />
+              <CostSaverLogo width={44} height={32} className="shrink-0 sm:h-10 sm:w-14" />
               <div className="min-w-0">
                 <h1 className="truncate font-heading text-lg font-bold leading-none text-foreground sm:text-xl">
-                  CostcoSaver
+                  Cost Saver
                 </h1>
                 <p className="hidden text-[11px] text-muted-foreground min-[360px]:block">
                   Smart Price Tracking

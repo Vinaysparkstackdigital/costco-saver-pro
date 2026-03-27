@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate CostcoSaver app icons from CS logo design
+Generate Cost Saver app icons from CS logo design
 Generates PNG icons for all Android density buckets
 """
 
@@ -72,6 +72,6 @@ def generate_all_icons():
         create_app_icon(size, os.path.join(output_dir, 'ic_launcher_foreground.png'))
 
 if __name__ == '__main__':
-    print("Generating CostcoSaver app icons...")
+    print("Generating Cost Saver app icons...")
     generate_all_icons()
     print("✓ All app icons generated successfully!")

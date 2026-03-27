@@ -1,4 +1,4 @@
-interface CostcoSaverLogoProps {
+interface CostSaverLogoProps {
   width?: number;
   height?: number;
   className?: string;
@@ -7,7 +7,7 @@ interface CostcoSaverLogoProps {
 const red = "#E31837";
 const blue = "#005DAA";
 
-const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSaverLogoProps) => (
+const CostSaverLogo = ({ width = 260, height = 60, className = '' }: CostSaverLogoProps) => (
   <svg
     width={width}
     height={height}
@@ -15,7 +15,7 @@ const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSav
     fill="none"
     className={className}
     xmlns="http://www.w3.org/2000/svg"
-    aria-label="CostcoSaver logo"
+    aria-label="Cost Saver logo"
     role="img"
   >
     <text
@@ -45,4 +45,4 @@ const CostcoSaverLogo = ({ width = 260, height = 60, className = '' }: CostcoSav
   </svg>
 );
 
-export default CostcoSaverLogo;
+export default CostSaverLogo;

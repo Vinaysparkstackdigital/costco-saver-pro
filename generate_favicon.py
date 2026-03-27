@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate CostcoSaver favicon
+Generate Cost Saver favicon
 """
 
 from PIL import Image, ImageDraw, ImageFont
@@ -30,6 +30,6 @@ def create_favicon():
     print("Generated: public/favicon.ico")
 
 if __name__ == '__main__':
-    print("Generating CostcoSaver favicon...")
+    print("Generating Cost Saver favicon...")
     create_favicon()
     print("✓ Favicon generated successfully!")

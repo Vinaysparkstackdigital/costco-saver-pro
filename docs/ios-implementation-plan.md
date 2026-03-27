@@ -1,4 +1,4 @@
-# CostcoSaver iOS Implementation Plan
+# Cost Saver iOS Implementation Plan
 
 ## Current Product Feature Audit
 
