@@ -65,6 +65,47 @@ const PrivacyPolicy = () => {
                 </div>
 
                 <div>
+                  <h2 className="text-2xl font-bold mt-8 mb-4">2.3 App Permissions & Access</h2>
+                  <p className="mb-4">
+                    Cost Saver requests certain device permissions to provide core functionality. Here's what we access and why:
+                  </p>
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-primary pl-4">
+                      <h4 className="font-semibold text-base mb-1">📷 Camera Permission</h4>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        <strong>Why we need it:</strong> To let you photograph Costco receipts directly from your phone camera for automatic item extraction.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>What we detect:</strong> Receipt text and item data only. We do not identify faces, people, or use camera for any purpose beyond receipt capture.
+                      </p>
+                    </div>
+                    
+                    <div className="border-l-4 border-primary pl-4">
+                      <h4 className="font-semibold text-base mb-1">🖼️ Photo Library/Gallery Access</h4>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        <strong>Why we need it:</strong> To let you select and upload receipt photos already stored on your device.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>What we access:</strong> Only images you explicitly select. We do not scan or access your entire photo library without permission.
+                      </p>
+                    </div>
+                    
+                    <div className="border-l-4 border-primary pl-4">
+                      <h4 className="font-semibold text-base mb-1">🔔 Push Notifications</h4>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        <strong>Why we need it:</strong> To send you real-time alerts when tracked items drop in price or other important notifications.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>What we collect:</strong> Approximate location (if enabled) to send location-aware notifications. You can disable notifications anytime in app settings.
+                      </p>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm text-muted-foreground italic">
+                    You can revoke any of these permissions anytime through your device settings. Revoking permissions may limit certain app features.
+                  </p>
+                </div>
+
+                <div>
                   <h2 className="text-2xl font-bold mt-8 mb-4">3. How We Use Your Information</h2>
                   <ul className="list-disc pl-6 space-y-2">
                     <li>Provide, operate, and improve the Service</li>
