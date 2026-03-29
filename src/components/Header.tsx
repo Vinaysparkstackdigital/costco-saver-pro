@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Receipt, TrendingDown, Bell, User, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Receipt, TrendingDown, Bell, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useTrackedItems } from "@/hooks/useTrackedItems";
@@ -10,9 +11,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const { items } = useTrackedItems();
   const [authOpen, setAuthOpen] = useState(false);
@@ -65,6 +68,14 @@ const Header = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    <DropdownMenuItem 
+                      onClick={() => navigate("/settings")} 
+                      className="cursor-pointer"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOut} className="cursor-pointer">
                       <LogOut className="w-4 h-4 mr-2" />
                       Sign Out

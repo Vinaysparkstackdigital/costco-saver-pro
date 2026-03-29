@@ -54,11 +54,12 @@ const TrackedItemsPage = () => {
         {/* Footer */}
         <footer className="mt-16 py-8 border-t border-border bg-card/50">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
               <p>© 2026 Cost Saver by SparkStack Digital LLC. Not affiliated with Costco Wholesale Corporation.</p>
-              <p>
-                Costco's price adjustment policy allows refunds within 30 days of purchase.
-              </p>
+              <div className="flex gap-4">
+                <a href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy Policy</a>
+                <a href="/terms-of-service" className="hover:text-foreground transition-colors">Terms of Service</a>
+              </div>
             </div>
           </div>
         </footer>
