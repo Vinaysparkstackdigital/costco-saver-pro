@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import TrackedItemsPage from "./pages/TrackedItemsPage";
+import AccountSettings from "./pages/AccountSettings";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 import { registerPushNotifications, isPushNotificationsAvailable } from "@/lib/pushNotifications";
 import { registerNativeAuthCallbackListener } from "@/lib/native";
@@ -41,6 +44,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/tracked-items" element={<TrackedItemsPage />} />
+            <Route path="/settings" element={<AccountSettings />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

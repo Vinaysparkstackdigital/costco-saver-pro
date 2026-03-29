@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Generate Cost Saver app icons from CS logo design
-Generates PNG icons for all Android density buckets
+Generate Cost Saver app icons from iOS source design
+Generates PNG icons for all Android density buckets by scaling from iOS icon
 """
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import os
 
 # Define icon sizes for Android density buckets
@@ -16,45 +16,36 @@ ICON_SIZES = {
     'xxxhdpi': 192,
 }
 
-# Colors
-RED = '#E31837'  # Costco red for C
-BLUE = '#005DAA'  # Costco blue for S
-WHITE = '#FFFFFF'
-BACKGROUND = '#F8FAFC'  # Light background
+# iOS source icon path
+IOS_ICON_SOURCE = 'ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png'
 
-def create_app_icon(size, output_path):
-    """Create app icon with CS monogram"""
-    # Create square image with background
-    img = Image.new('RGB', (size, size), BACKGROUND)
-    draw = ImageDraw.Draw(img)
+def resize_app_icon(source_image, size, output_path):
+    """Resize iOS source icon to target size with 20% reduction and centered"""
+    # Reduce the design by 20% (scale to 80% of target size)
+    design_size = int(size * 0.8)
     
-    # Try to use a bold font, fall back to default
-    try:
-        font_size = int(size * 0.5)
-        font = ImageFont.truetype("arial.ttf", font_size)
-    except:
-        font = ImageFont.load_default()
+    # Resize the source image to 80% of target size
+    design = source_image.resize((design_size, design_size), Image.Resampling.LANCZOS)
     
-    # Calculate positions for C and S
-    margin = int(size * 0.1)
-    letter_width = size // 3
+    # Create a white background image with padding
+    img = Image.new('RGB', (size, size), 'white')
     
-    # Draw red C
-    c_x = margin
-    c_y = (size - font_size) // 2
-    draw.text((c_x, c_y), "C", font=font, fill=RED)
-    
-    # Draw blue S (positioned to overlap slightly)
-    s_x = c_x + letter_width
-    s_y = c_y
-    draw.text((s_x, s_y), "S", font=font, fill=BLUE)
+    # Calculate centered position for the design
+    padding = (size - design_size) // 2
+    img.paste(design, (padding, padding))
     
     # Save with high quality
     img.save(output_path, 'PNG', quality=95)
     print(f"Generated: {output_path}")
 
 def generate_all_icons():
-    """Generate icons for all densities"""
+    """Generate icons for all densities from iOS source"""
+    # Load the iOS source icon
+    if not os.path.exists(IOS_ICON_SOURCE):
+        print(f"Error: iOS icon source not found at {IOS_ICON_SOURCE}")
+        return
+    
+    source_img = Image.open(IOS_ICON_SOURCE).convert('RGB')
     base_dir = 'android/app/src/main/res'
     
     for density, size in ICON_SIZES.items():
@@ -63,15 +54,15 @@ def generate_all_icons():
         os.makedirs(output_dir, exist_ok=True)
         
         # Main icon
-        create_app_icon(size, os.path.join(output_dir, 'ic_launcher.png'))
+        resize_app_icon(source_img, size, os.path.join(output_dir, 'ic_launcher.png'))
         
-        # Round icon
-        create_app_icon(size, os.path.join(output_dir, 'ic_launcher_round.png'))
+        # Round icon (same image, will be rounded by Android)
+        resize_app_icon(source_img, size, os.path.join(output_dir, 'ic_launcher_round.png'))
         
         # Foreground icon (for adaptive icon)
-        create_app_icon(size, os.path.join(output_dir, 'ic_launcher_foreground.png'))
+        resize_app_icon(source_img, size, os.path.join(output_dir, 'ic_launcher_foreground.png'))
 
 if __name__ == '__main__':
-    print("Generating Cost Saver app icons...")
+    print("Generating Cost Saver app icons from iOS source...")
     generate_all_icons()
     print("✓ All app icons generated successfully!")

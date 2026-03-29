@@ -56,11 +56,12 @@ const Index = () => {
         {/* Footer */}
         <footer className="mt-20 py-8 border-t border-border bg-card/30">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
               <p>© 2026 Cost Saver by SparkStack Digital LLC. Not affiliated with Costco Wholesale Corporation.</p>
-              <p>
-                Costco's price adjustment policy allows refunds within 30 days of purchase. Always verify with Costco before claiming refunds.
-              </p>
+              <div className="flex gap-4">
+                <a href="https://Vinaysparkstackdigital.github.io/costco-saver-pro/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Privacy Policy</a>
+                <a href="https://Vinaysparkstackdigital.github.io/costco-saver-pro/terms" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Terms of Service</a>
+              </div>
             </div>
           </div>
         </footer>

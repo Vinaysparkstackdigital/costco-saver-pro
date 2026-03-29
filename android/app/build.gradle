@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     namespace = "com.sparkstack.costcosaver"
     compileSdk = rootProject.ext.compileSdkVersion
-
     defaultConfig {
         applicationId "com.sparkstack.costcosaver"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -11,64 +10,49 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         aaptOptions {
-            // Required for modern web apps (Capacitor)
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android.txt'
-            ), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    // 🔑 IMPORTANT: Android supports Java 17 (NOT 21)
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 }
 
 repositories {
-    flatDir {
+    flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
-
     implementation project(':capacitor-android')
-    implementation project(':capacitor-cordova-android-plugins')
-
-    // Firebase (Messaging only — no Crashlytics yet)
-    implementation platform('com.google.firebase:firebase-bom:32.7.0')
-    implementation 'com.google.firebase:firebase-messaging'
-
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
 }
 
 apply from: 'capacitor.build.gradle'
 
-// ✅ Apply Google Services plugin ONLY if google-services.json exists
 try {
     def servicesJSON = file('google-services.json')
-    if (servicesJSON.exists() && servicesJSON.text) {
+    if (servicesJSON.text) {
         apply plugin: 'com.google.gms.google-services'
     }
-} catch (Exception e) {
-    logger.lifecycle(
-            "google-services.json not found, Google Services plugin not applied"
-    )
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
