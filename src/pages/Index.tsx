@@ -59,8 +59,8 @@ const Index = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
               <p>© 2026 Cost Saver by SparkStack Digital LLC. Not affiliated with Costco Wholesale Corporation.</p>
               <div className="flex gap-4">
-                <a href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy Policy</a>
-                <a href="/terms-of-service" className="hover:text-foreground transition-colors">Terms of Service</a>
+                <a href="https://Vinaysparkstackdigital.github.io/costco-saver-pro/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Privacy Policy</a>
+                <a href="https://Vinaysparkstackdigital.github.io/costco-saver-pro/terms" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Terms of Service</a>
               </div>
             </div>
           </div>

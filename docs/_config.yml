@@ -1,0 +1,18 @@
+# GitHub Pages Configuration for Cost Saver Policy Documentation
+title: "Cost Saver"
+description: "Privacy Policy and Terms of Service for Cost Saver by SparkStack Digital LLC"
+baseurl: "/costco-saver-pro"
+url: "https://Vinaysparkstackdigital.github.io"
+theme: null # We're using custom HTML, no Jekyll theme
+
+# Site settings
+author: "SparkStack Digital LLC"
+email: "info@sparkstackdigital.com"
+
+# Build settings
+markdown: kramdown
+exclude:
+  - .gitignore
+  - README.md
+  - Gemfile
+  - Gemfile.lock

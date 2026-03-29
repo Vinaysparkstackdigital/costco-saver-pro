@@ -176,20 +176,22 @@ const AccountSettings = () => {
               <Card className="p-6 md:p-8">
                 <h2 className="text-lg font-bold mb-4">More Information</h2>
                 <div className="space-y-3">
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start text-left"
-                    onClick={() => navigate("/privacy-policy")}
+                  <a
+                    href="https://Vinaysparkstackdigital.github.io/costco-saver-pro/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full justify-start text-left block px-4 py-2 border border-input rounded-md hover:bg-accent transition-colors"
                   >
                     Privacy Policy
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start text-left"
-                    onClick={() => navigate("/terms-of-service")}
+                  </a>
+                  <a
+                    href="https://Vinaysparkstackdigital.github.io/costco-saver-pro/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full justify-start text-left block px-4 py-2 border border-input rounded-md hover:bg-accent transition-colors"
                   >
                     Terms of Service
-                  </Button>
+                  </a>
                 </div>
               </Card>
             </div>
