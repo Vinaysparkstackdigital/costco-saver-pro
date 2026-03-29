@@ -156,7 +156,7 @@ const PrivacyPolicy = () => {
                     For privacy inquiries, account concerns, or to exercise your rights:
                   </p>
                   <p className="mt-3">
-                    <strong>Email:</strong> privacy@costcosaver.com<br />
+                    <strong>Email:</strong> info@sparkstackdigital.com<br />
                     <strong>Company:</strong> SparkStack Digital LLC<br />
                     <strong>Response Time:</strong> We respond to requests within 30 days
                   </p>

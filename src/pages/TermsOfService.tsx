@@ -167,7 +167,7 @@ const TermsOfService = () => {
                     If you have any questions about these Terms of Service:
                   </p>
                   <p className="mt-3">
-                    <strong>Email:</strong> support@costcosaver.com<br />
+                    <strong>Email:</strong> info@sparkstackdigital.com<br />
                     <strong>Company:</strong> SparkStack Digital LLC
                   </p>
                 </div>
